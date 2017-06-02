@@ -2,6 +2,15 @@
 # vi: set ft=ruby :
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
+BERKSHELF = false
+# We'll mount the Chef::Config[:file_cache_path] so it persists between
+# Vagrant VMs
+host_cache_path = File.expand_path("../.cache", __FILE__)
+guest_cache_path = "/tmp/vagrant-cache"
+
+# ensure the cache path exists
+FileUtils.mkdir(host_cache_path) unless File.exist?(host_cache_path)
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "bento/centos-6.7"
   config.vm.provision :shell, path: "scripts/bootstrap.sh"
